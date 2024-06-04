@@ -1,0 +1,97 @@
+from time import sleep
+from turtle import *
+
+class Clock:
+    def __init__(self, size):
+        self.size = size
+
+    def basis(self):
+        fillcolor("#F5F5F5")
+        radius = self.size
+        up()
+        goto(0, -radius)
+        down()
+        begin_fill()
+        circle(radius)
+        end_fill()
+        left(90)
+        up()
+        goto(0, (radius - radius / 5))
+        for i in range(1, 13):
+            up()
+            goto(0, -20)
+            setheading(90)
+            right(30 * i)
+            forward(radius - radius / 8)
+            down()
+            write(str(i), align="center", font=("Times New Roman", 32, "normal"))
+
+    def arrow_sec(self):
+        pencolor("#222021")
+        pensize(6)
+        size = self.size - self.size / 3
+        up()
+        goto(0, 0)
+        down()
+        forward(size)
+        backward(size + self.size / 5)
+        goto(0, 0)
+
+    def arrow_min(self):
+        pensize(4)
+        size = self.size - self.size / 5
+        up()
+        goto(0, 0)
+        down()
+        forward(size)
+        backward(size + self.size / 5)
+        goto(0, 0)
+
+    def draw(self):
+        sec = 0
+        min = 0
+        self.basis()
+        color("darkred")
+        self.arrow_min()
+        up()
+        goto(self.size / 40, 0)
+        fillcolor("#d9bd26")
+        begin_fill()
+        circle(self.size / 40)
+        end_fill()
+        down()
+        while True:
+            self.arrow_sec()
+            sleep(0.1)
+            for i in range(3):
+                undo()
+            sec += 1
+            if sec == 60:
+                sec = 0
+                min += 1
+                setheading(90)
+                right(6 * (min - 1))
+                color("#F5F5F5")
+                self.arrow_min()
+                setheading(90)
+                right(6 * min)
+                color("darkred")
+                self.arrow_min()
+                up()
+                setheading(90)
+                goto(self.size / 40, 0)
+                fillcolor("#d9bd26")
+                begin_fill()
+                circle(self.size / 40)
+                end_fill()
+                down()
+            setheading(90)
+            right(6 * sec)
+
+if __name__ == "__main__":
+    speed(0)
+    hideturtle()
+    bgcolor("#696969")
+    clock = Clock(300)
+    clock.draw()
+    mainloop()
